@@ -2,7 +2,7 @@ const express = require('express');
 const employeesRouter = express.Router();
 
 const sqlite3 = require('sqlite3');
-const db = new sqlite3.Database(process.env.TEST_DATABASE || './database.sqlite');
+const db = new sqlite3.Database('./database.sqlite');
 
 const timesheetsRouter = require('./timesheets.js');
 employeesRouter.use('/:employeeId/timesheets', timesheetsRouter);
@@ -50,7 +50,7 @@ employeesRouter.post('/', (req, res, next) => {
     $isCurrentEmployee: isCurrentEmployee
   };
 
-  db.run(sql, values, function(err) {
+  db.run(sql, values, function (err) {
     if (err) {
       next(err);
     } else {
@@ -78,7 +78,7 @@ employeesRouter.put('/:employeeId', (req, res, next) => {
     $employeeId: req.params.employeeId
   };
 
-  db.run(sql, values, err => {
+  db.run(sql, values, (err) => {
     if (err) {
       next(err);
     } else {
@@ -96,7 +96,7 @@ employeesRouter.delete('/:employeeId', (req, res, next) => {
   db.run(
     'UPDATE Employee SET is_current_employee = 0 WHERE Employee.id = $employeeId',
     { $employeeId: req.params.employeeId },
-    err => {
+    (err) => {
       if (err) {
         next(err);
       } else {

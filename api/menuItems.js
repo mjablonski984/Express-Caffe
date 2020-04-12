@@ -2,7 +2,7 @@ const express = require('express');
 const menuItemsRouter = express.Router({ mergeParams: true });
 
 const sqlite3 = require('sqlite3');
-const db = new sqlite3.Database(process.env.TEST_DATABASE || './database.sqlite');
+const db = new sqlite3.Database('./database.sqlite');
 
 menuItemsRouter.param('menuItemId', (req, res, next, menuItemId) => {
   db.get(
@@ -51,7 +51,7 @@ menuItemsRouter.post('/', (req, res, next) => {
         $menuId: menuId
       };
 
-      db.run(sql, values, function(err) {
+      db.run(sql, values, function (err) {
         if (err) {
           next(err);
         } else {
@@ -90,7 +90,7 @@ menuItemsRouter.put('/:menuItemId', (req, res, next) => {
         $menuItemId: req.params.menuItemId
       };
 
-      db.run(sql, values, err => {
+      db.run(sql, values, (err) => {
         if (err) {
           next(err);
         } else {
@@ -110,7 +110,7 @@ menuItemsRouter.delete('/:menuItemId', (req, res, next) => {
   db.run(
     'DELETE FROM MenuItem WHERE MenuItem.id = $menuItemId',
     { $menuItemId: req.params.menuItemId },
-    err => {
+    (err) => {
       if (err) {
         next(err);
       } else {

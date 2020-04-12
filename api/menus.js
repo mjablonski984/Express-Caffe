@@ -2,7 +2,7 @@ const express = require('express');
 const menusRouter = express.Router();
 
 const sqlite3 = require('sqlite3');
-const db = new sqlite3.Database(process.env.TEST_DATABASE || './database.sqlite');
+const db = new sqlite3.Database('./database.sqlite');
 
 const menuItemsRouter = require('./menuItems.js');
 menusRouter.use('/:menuId/menu-items', menuItemsRouter);
@@ -37,7 +37,7 @@ menusRouter.post('/', (req, res, next) => {
   if (!title) {
     return res.sendStatus(400);
   }
-  db.run('INSERT INTO Menu (title) VALUES ($title)', { $title: title }, function(err) {
+  db.run('INSERT INTO Menu (title) VALUES ($title)', { $title: title }, function (err) {
     if (err) {
       next(err);
     } else {
@@ -57,7 +57,7 @@ menusRouter.put('/:menuId', (req, res, next) => {
   db.run(
     'UPDATE Menu SET title = $title WHERE Menu.id = $menuId',
     { $title: title, $menuId: req.params.menuId },
-    err => {
+    (err) => {
       if (err) {
         next(err);
       } else {
@@ -81,7 +81,7 @@ menusRouter.delete('/:menuId', (req, res, next) => {
       db.run(
         'DELETE FROM Menu WHERE Menu.id = $menuId',
         { $menuId: req.params.menuId },
-        err => {
+        (err) => {
           if (err) {
             next(err);
           } else {

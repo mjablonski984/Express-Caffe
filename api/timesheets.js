@@ -2,7 +2,7 @@ const express = require('express');
 const timesheetsRouter = express.Router({ mergeParams: true });
 
 const sqlite3 = require('sqlite3');
-const db = new sqlite3.Database(process.env.TEST_DATABASE || './database.sqlite');
+const db = new sqlite3.Database('./database.sqlite');
 
 // middleware for routes with param :timesheetId
 timesheetsRouter.param('timesheetId', (req, res, next, timesheetId) => {
@@ -46,7 +46,7 @@ timesheetsRouter.post('/', (req, res, next) => {
     $employeeId: employeeId
   };
 
-  db.run(sql, values, function(err) {
+  db.run(sql, values, function (err) {
     if (err) {
       next(err);
     } else {
@@ -78,7 +78,7 @@ timesheetsRouter.put('/:timesheetId', (req, res, next) => {
     $timesheetId: req.params.timesheetId
   };
 
-  db.run(sql, values, function(err) {
+  db.run(sql, values, function (err) {
     if (err) {
       next(err);
     } else {
@@ -94,7 +94,7 @@ timesheetsRouter.delete('/:timesheetId', (req, res, next) => {
   db.run(
     'DELETE FROM Timesheet WHERE Timesheet.id = $timesheetId',
     { $timesheetId: req.params.timesheetId },
-    err => (err ? next(err) : res.sendStatus(204))
+    (err) => (err ? next(err) : res.sendStatus(204))
   );
 });
 
